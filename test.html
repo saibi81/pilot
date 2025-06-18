@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>중앙대학교 군AI 교육과정 - Genspark.AI & Codex</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .header-bar {
+            background-color: #1a3c6e;
+            height: 12px;
+        }
+        .footer-bar {
+            background-color: #1a3c6e;
+            height: 12px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+        .title {
+            font-weight: 700;
+            color: #1a3c6e;
+            line-height: 1.2;
+        }
+        .subtitle {
+            color: #444;
+        }
+        .logo-area img {
+            max-height: 80px;
+        }
+        .ai-icon {
+            color: #1a3c6e;
+            font-size: 24px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body class="flex justify-center items-center min-h-screen bg-gray-100">
+    <div class="slide-container shadow-xl">
+        <!-- Top bar -->
+        <div class="header-bar"></div>
+        
+        <!-- Logo area -->
+        <div class="logo-area absolute top-6 right-6">
+            <img src="https://www.cau.ac.kr/common/images/introduction/header_logo.png" alt="중앙대학교 로고" class="h-20">
+        </div>
+        
+        <!-- Main content -->
+        <div class="flex flex-col justify-center items-center h-full px-16 pb-16 pt-24">
+            <!-- Decorative elements -->
+            <div class="w-full flex justify-center mb-8">
+                <div class="flex items-center">
+                    <i class="fas fa-microchip ai-icon"></i>
+                    <i class="fas fa-robot ai-icon"></i>
+                    <i class="fas fa-code ai-icon"></i>
+                    <i class="fas fa-phone-alt ai-icon"></i>
+                </div>
+            </div>
+            
+            <!-- Title and subtitle -->
+            <h1 class="title text-5xl text-center mb-6">중앙대학교 군AI 교육과정</h1>
+            <h2 class="title text-4xl text-center mb-12">Genspark.AI & Codex</h2>
+            
+            <div class="w-24 h-1 bg-blue-800 mb-10"></div>
+            
+            <h3 class="subtitle text-2xl text-center mb-6">군AI 시대를 선도하는 중앙대학교의 혁신 교육과정</h3>
+            <h4 class="subtitle text-xl text-center max-w-3xl">
+                Genspark.AI 전화비서, OpenAI Codex, Codex CLI를 통한 최신 AI 실무 적용
+            </h4>
+            
+            <!-- Bottom illustration -->
+            <div class="absolute bottom-16 w-full flex justify-center">
+                <img src="https://www.army.mil.kr/sites/army/images/content/img_vision05.jpg" alt="군AI 이미지" class="w-1/3 opacity-70 rounded-lg shadow-md">
+            </div>
+        </div>
+        
+        <!-- Footer bar -->
+        <div class="footer-bar"></div>
+    </div>
+</body>
+</html>
