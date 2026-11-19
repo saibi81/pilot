@@ -1,0 +1,13 @@
+{
+  "name": "csi-quotation-generator",
+  "private": true,
+  "version": "1.0.0",
+  "description": "오프라인 견적서 자동 생성기 (UFTR-1~12)",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "UNLICENSED"
+}
