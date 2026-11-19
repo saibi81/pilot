@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>견적서 자동 생성기 | 오프라인 웹 프로그램</title>
+<style>
+:root{--blue:#174a84;--blue2:#246ab8;--ink:#18283a;--muted:#61738a;--line:#dce5ef;--bg:#f2f6fb;--white:#fff}
+*{box-sizing:border-box}html{font-family:'Noto Sans CJK KR','Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:var(--ink);font-style:normal}body{margin:0;background:var(--bg)}button,input,textarea,select{font:inherit;font-style:normal}button{cursor:pointer}button:disabled{opacity:.4;cursor:default}
+.toolbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:9px;flex-wrap:wrap;background:#fff;border-bottom:1px solid var(--line);padding:11px 22px;box-shadow:0 2px 14px #102d5210}.brand{font-weight:800;color:var(--blue);font-size:18px;margin-right:auto;letter-spacing:-.45px}.subtitle{font-size:11px;color:var(--muted);font-weight:500;display:block}.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:35px;padding:7px 12px;border:1px solid #cbd8e6;border-radius:8px;background:#fff;color:#263d58;font-weight:700;font-size:12px}.btn:hover{background:#edf4ff}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.primary:hover{background:#0f3d71}.btn.tiny{padding:5px 8px;min-height:28px;font-size:11px}.btn.danger{color:#ad3a40}.status{font-size:11px;color:#51708e;min-width:64px;text-align:right}
+.layout{display:grid;grid-template-columns:minmax(350px,440px) minmax(650px,1fr);align-items:start;gap:20px;padding:18px;max-width:1660px;margin:0 auto}.editor{min-width:0;display:flex;flex-direction:column;gap:12px}.panel{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 2px 14px #19365508;overflow:hidden}.panel-title{font-size:14px;font-weight:800;margin:0;padding:14px 16px;background:linear-gradient(90deg,#f7fbff,#fff);border-bottom:1px solid #e4ecf5;color:#234367}.panel-body{padding:14px 15px;display:flex;flex-direction:column;gap:11px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}.field{display:flex;flex-direction:column;gap:4px;min-width:0}.field label{font-size:11px;color:#4d647e;font-weight:700}.field input,.field textarea,.field select{width:100%;border:1px solid #d1deec;border-radius:7px;outline:none;padding:8px 9px;min-height:36px;font-size:12px;color:var(--ink);background:#fff}.field textarea{min-height:58px;resize:vertical;line-height:1.5}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--blue2);box-shadow:0 0 0 3px #2678ca16}.help{font-size:11px;color:#6b7d92;line-height:1.55;margin:0}.block-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:3px}.block-heading strong{font-size:12px;color:#26435d}.item-editor{border:1px solid #dbe5f0;background:#f9fbfe;border-radius:9px;padding:11px;display:flex;flex-direction:column;gap:8px}.item-head{display:flex;align-items:center;justify-content:space-between;gap:7px}.item-head strong{font-size:12px;color:#234b79}.item-actions{display:flex;gap:5px}.unit-suffix{font-size:10px;color:#74859a;white-space:nowrap}.rowflex{display:flex;gap:7px;align-items:center;justify-content:space-between}.calc{font-size:12px;font-weight:800;text-align:right;color:#174a84;border-top:1px dashed #d9e2ef;padding-top:8px}.toggle-row{display:flex;gap:8px;align-items:center}.toggle-row input{width:16px;height:16px;accent-color:var(--blue)}.totals{display:grid;grid-template-columns:1fr auto;gap:7px;font-size:12px}.totals>div:nth-child(even){font-weight:800;text-align:right;font-variant-numeric:tabular-nums}.total-last{font-size:15px;color:var(--blue);border-top:1px solid var(--line);padding-top:9px}.file-hidden{display:none}.preview-column{min-width:0}.preview-heading{display:flex;justify-content:space-between;align-items:center;margin:1px 0 12px;padding:0 4px}.preview-heading strong{font-size:14px}.preview-heading span{font-size:11px;color:var(--muted)}.paper-wrap{display:flex;justify-content:center;overflow:auto;padding:4px 0 30px}.sheet{background:#fff;width:210mm;min-width:210mm;min-height:297mm;padding:16mm 12mm 12mm;box-shadow:0 7px 30px #22416421;font-size:10pt;color:#111;line-height:1.35}.quotation{border:1.2px solid #111}.qtitle{font-size:19pt;font-weight:800;letter-spacing:7px;text-align:center;height:59px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #111}.qparty{display:grid;grid-template-columns:31% 69%;min-height:138px}.qrecipient{padding:14px 11px;border-right:1px solid #222;display:flex;flex-direction:column;justify-content:center;gap:14px;font-size:9pt}.qrecipient .to-name{white-space:pre-line;overflow-wrap:anywhere;line-height:1.45}.qrecipient .q-date{font-weight:600;letter-spacing:.2px}.qsupplier{display:grid;grid-template-columns:32px 1fr;position:relative;min-width:0}.supplier-vertical{border-right:1px solid #222;display:flex;justify-content:center;align-items:center;writing-mode:vertical-rl;letter-spacing:6px;font-size:9pt;font-weight:700}.supp-table{border-collapse:collapse;width:100%;table-layout:fixed;font-size:8.5pt}.supp-table th,.supp-table td{border-bottom:1px solid #333;padding:4px 4px;text-align:center;vertical-align:middle;line-height:1.3;overflow-wrap:anywhere}.supp-table th{font-weight:700;white-space:nowrap;background:#fbfbfb}.supp-table tr:last-child td,.supp-table tr:last-child th{border-bottom:none}.supp-table .company{font-weight:700}.seal-image{position:absolute;right:7px;top:10px;max-width:70px;max-height:70px;object-fit:contain;opacity:.86;pointer-events:none}.qamount{border-top:1px solid #111;padding:8px 12px;text-align:center;font-size:9pt;overflow-wrap:anywhere}.qamount b{letter-spacing:.5px}.qtable{border-collapse:collapse;width:100%;table-layout:fixed;font-size:8.5pt}.qtable th,.qtable td{border:1px solid #333;padding:7px 4px;vertical-align:middle;text-align:center;overflow-wrap:anywhere}.qtable th:first-child,.qtable td:first-child{border-left:0}.qtable th:last-child,.qtable td:last-child{border-right:0}.qtable thead th{background:#e2e2e2;font-weight:700;padding:6px 2px}.qtable .description{text-align:left;white-space:pre-wrap;line-height:1.55;padding:11px 7px}.qtable tbody tr.item-row td{height:68px}.qtable tbody tr.item-row:first-child td{height:112px}.qtable .money{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;padding-right:8px}.qtable tfoot td{height:25px;padding:4px 6px}.qtable tfoot .sum-label{font-weight:700;text-align:center}.qtable .sum-row{font-weight:800;background:#f2f2f2}.qtable .vat-row{font-size:8pt}.qtable .sum-money{font-weight:800;text-align:right;padding-right:8px;white-space:nowrap}.qremarks{padding:12px 11px 15px;border-top:0;font-size:8.6pt;min-height:110px}.remarks-head{margin-bottom:4px;font-weight:700;letter-spacing:2px}.remark{line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}.footer-caption{font-size:9px;color:#6f8097;margin:13px 0;text-align:center}.section-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}.hint-bar{background:#eaf3ff;padding:11px;border-radius:8px;color:#305e91;font-size:11px;line-height:1.55}
+@media(max-width:1160px){.layout{grid-template-columns:1fr}.editor{display:grid;grid-template-columns:1fr 1fr;align-items:start}.editor>.panel{align-self:start}.preview-column{width:100%}}@media(max-width:760px){.toolbar{padding:10px 12px}.brand{width:100%}.layout{padding:10px;gap:12px}.editor{display:flex}.grid3{grid-template-columns:1fr 1fr}.paper-wrap{justify-content:flex-start}.status{display:none}}
+@page{size:A4 portrait;margin:0} @media print{html,body{background:#fff!important;margin:0!important;padding:0!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.toolbar,.editor,.preview-heading,.footer-caption{display:none!important}.layout{display:block!important;margin:0!important;padding:0!important;max-width:none!important}.preview-column,.paper-wrap{display:block!important;overflow:visible!important;padding:0!important;margin:0!important}.sheet{box-shadow:none!important;border:none!important;width:210mm!important;min-width:210mm!important;min-height:297mm!important;padding:15mm 12mm 10mm!important;margin:0!important;font-size:10pt!important}.quotation{break-inside:auto;page-break-inside:auto}.qtable tr{break-inside:avoid;page-break-inside:avoid}.qremarks{break-inside:avoid;page-break-inside:avoid}.item-row td{break-inside:avoid}.qtable thead{display:table-header-group}}
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <div class="brand">견적서 자동 생성기<span class="subtitle">첨부 견적서 기반 · 오프라인 사용 · 금액 자동 계산</span></div>
+  <span class="status" id="saveStatus" aria-live="polite">저장 준비</span>
+  <button class="btn" id="importBtn">JSON 불러오기</button>
+  <button class="btn" id="exportBtn">JSON 저장</button>
+  <button class="btn" id="newBtn">새 견적</button>
+  <button class="btn primary" id="printBtn">인쇄 / PDF 저장</button>
+  <input class="file-hidden" type="file" accept="application/json,.json" id="importFile">
+</div>
+<div class="layout">
+  <main class="editor" id="editor">
+    <section class="panel"><h2 class="panel-title">1. 견적 기본 정보</h2><div class="panel-body">
+      <div class="grid2"><div class="field"><label for="issued">발행일</label><input type="date" id="issued" data-field="issued"></div><div class="field"><label for="quoteNo">견적번호 (선택)</label><input id="quoteNo" data-field="quoteNo" placeholder="Q-2026-001"></div></div>
+      <div class="grid2"><div class="field"><label for="client">수신 기관 / 회사</label><input id="client" data-field="client"></div><div class="field"><label for="contact">담당자 및 직함</label><input id="contact" data-field="contact"></div></div>
+      <div class="field"><label for="greeting">견적 안내 문구</label><textarea rows="2" id="greeting" data-field="greeting"></textarea></div>
+      <div class="grid2"><div class="field"><label for="vatMode">부가세 처리</label><select id="vatMode" data-field="vatMode"><option value="included">입력 금액에 VAT 포함</option><option value="excluded">입력 금액에 VAT 별도</option><option value="exempt">면세 (VAT 없음)</option></select></div><div class="field"><label for="validDays">견적 유효기간 (일)</label><input type="number" min="0" max="999" id="validDays" data-field="validDays"></div></div>
+    </div></section>
+    <section class="panel"><h2 class="panel-title">2. 공급자 정보</h2><div class="panel-body">
+      <div class="grid2"><div class="field"><label>상호</label><input data-field="vendor.name"></div><div class="field"><label>대표자</label><input data-field="vendor.ceo"></div></div>
+      <div class="grid2"><div class="field"><label>사업자등록번호</label><input data-field="vendor.registration"></div><div class="field"><label>전화번호</label><input data-field="vendor.phone"></div></div>
+      <div class="field"><label>사업장 주소</label><textarea rows="2" data-field="vendor.address"></textarea></div>
+      <div class="grid2"><div class="field"><label>업태</label><input data-field="vendor.businessType"></div><div class="field"><label>종목</label><textarea rows="2" data-field="vendor.businessItem"></textarea></div></div>
+      <div class="rowflex"><div class="field"><label for="sealUpload">직인 또는 로고 (선택, 직접 업로드)</label><input id="sealUpload" type="file" accept="image/png,image/jpeg,image/webp"></div><button class="btn tiny" id="sealRemoveBtn">제거</button></div>
+      <p class="help">원본 공급자의 직인 이미지는 복제하지 않았습니다. 실제 발행 업체의 직인만 업로드하세요.</p>
+    </div></section>
+    <section class="panel"><h2 class="panel-title">3. 품목 및 금액</h2><div class="panel-body">
+      <div class="hint-bar">월정액: 개월수 × 수량 × 월 단가 / 일반품목: 수량 × 단가 / 정액: 금액 그대로 적용</div>
+      <div id="itemsEditor" style="display:flex;flex-direction:column;gap:10px"></div>
+      <button class="btn" id="addItemBtn" style="width:100%">+ 품목 추가</button>
+      <div class="totals" id="totalsEditor"></div>
+    </div></section>
+    <section class="panel"><h2 class="panel-title">4. 비고 / 납품 조건</h2><div class="panel-body">
+      <div class="field"><label for="remarks">비고 (줄바꿈으로 항목 구분)</label><textarea id="remarks" data-field="remarks" rows="9" style="min-height:185px"></textarea></div>
+      <p class="help">견적 유효기간, 계정 및 라이선스 구성, 납품 방식, 세금계산서 조건 등을 자유롭게 편집합니다.</p>
+      <div class="rowflex"><label class="toggle-row"><input id="showVatBreakdown" type="checkbox" data-field="showVatBreakdown">견적서에 공급가액·VAT 상세 표시</label></div>
+    </div></section>
+    <section class="panel"><h2 class="panel-title">5. 사용 방법</h2><div class="panel-body">
+      <p class="help">정보 수정 시 오른쪽 A4 미리보기가 즉시 변경됩니다. <b>인쇄 / PDF 저장</b> 버튼을 눌러 인쇄 대상을 <b>PDF로 저장</b>으로 선택하세요.</p>
+      <p class="help">데이터는 이 브라우저에 자동 저장됩니다. PC를 옮기거나 장기 보관하려면 <b>JSON 저장</b>을 사용하세요. 별도 설치 또는 서버가 필요하지 않습니다.</p>
+    </div></section>
+  </main>
+  <section class="preview-column"><div class="preview-heading"><strong>A4 견적서 실시간 미리보기</strong><span>화면과 동일한 내용으로 인쇄됩니다</span></div>
+    <div class="paper-wrap"><div class="sheet" id="sheet"><div class="quotation">
+      <div class="qtitle">견적서</div>
+      <div class="qparty"><div class="qrecipient"><div class="q-date" id="prevDate"></div><div class="to-name" id="prevRecipient"></div></div>
+        <div class="qsupplier"><div class="supplier-vertical">공급자</div><table class="supp-table"><colgroup><col style="width:23%"><col style="width:35%"><col style="width:17%"><col style="width:25%"></colgroup><tbody>
+        <tr><th>등록번호</th><td colspan="3" class="company" id="prevReg"></td></tr>
+        <tr><th>상 호</th><td id="prevVendor"></td><th>대표성명</th><td id="prevCEO"></td></tr>
+        <tr><th>사업장주소</th><td colspan="3" id="prevAddress"></td></tr>
+        <tr><th>업 태</th><td id="prevType"></td><th>종목</th><td id="prevBusinessItem"></td></tr>
+        <tr><th>전화번호</th><td colspan="3" id="prevPhone"></td></tr>
+        </tbody></table><img alt="직인" class="seal-image" id="prevSeal" style="display:none"></div>
+      </div>
+      <div class="qamount" id="prevAmount"></div>
+      <table class="qtable"><colgroup><col style="width:8%"><col style="width:39%"><col style="width:11%"><col style="width:11%"><col style="width:12%"><col style="width:19%"></colgroup>
+        <thead><tr><th>구분</th><th>품명/규격</th><th>개월수</th><th>수량</th><th>단가(원)</th><th>총 금액</th></tr></thead>
+        <tbody id="prevItems"></tbody><tfoot id="prevTotals"></tfoot>
+      </table>
+      <div class="qremarks"><div class="remarks-head">- 비 고 -</div><div id="prevRemarks"></div></div>
+    </div></div></div>
+    <div class="footer-caption">표시된 견적서의 공급자·수신자·금액·조건은 수정 가능한 예시 데이터입니다.</div>
+  </section>
+</div>
+<script>
+'use strict';
+const STORAGE_KEY='quotation-maker-v1';
+const DEFAULT = {
+  issued:'2026-09-08', quoteNo:'', client:'한국전력공사 전력연구원', contact:'이성은 선임연구원', greeting:'아래와 같이 견적합니다.', vatMode:'included', validDays:30, showVatBreakdown:false,
+  vendor:{name:'에이아이로',ceo:'임성공',registration:'106-48-11578',address:'서울특별시 송파구 법원로 128,\nC동 1101-25호(문정동, 문정역SKV1)',businessType:'도매 및 소매업',businessItem:'컴퓨터 및 주변장치,\n소프트웨어 도매업',phone:'031-214-2635'},
+  seal:'',
+  items:[
+    {id:'sample-1',type:'monthly',name:'디지털서비스 이용료\n제품명 : 생성형 AI 어시스턴트 (12개월)\n- Claude Team standard 3\n- ChatGPT Business standard 1\n- Gemini Pro 1',months:12,qty:5,unit:44000},
+    {id:'sample-2',type:'fixed',name:'통합 관리 기능\n(관리자 기능, 기술지원, 교육지원)\n/ 12개월 정액',months:1,qty:1,unit:110000}
+  ],
+  remarks:'라이선스 5개 / 계정 4개 — 1개 계정에서 ChatGPT와 Claude를 함께 사용합니다.\n이용 기간 12개월. 개시일 확정 시 기간 표기를 조정해 드립니다.\n견적서 유효기간 : 발행일로부터 30일 (환율 변동 시 금액이 조정될 수 있습니다)\n납품 방식 : 신규 계정으로 납품 / 행정 서류·발주 요청 : info@ai4.co.kr\n세금계산서 요청 : 별도 요청 / 대금 납부(계좌이체) : 납품 후 7일 내'
+};
+const deepCopy=o=>JSON.parse(JSON.stringify(o));
+const $=sel=>document.querySelector(sel);
+const money=n=>Math.round(Number(n)||0).toLocaleString('ko-KR');
+const cleanNum=v=>{const n=Number(String(v??0).replace(/,/g,''));return Number.isFinite(n)?Math.max(0,n):0};
+const numint=v=>Math.round(cleanNum(v));
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dateText=s=>{const m=String(s||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?`${m[1]} 년 ${m[2]} 월 ${m[3]} 일`:String(s||'')};
+function amountKorean(amount){
+ let n=numint(amount);if(n===0)return '영';
+ const digits=['','일','이','삼','사','오','육','칠','팔','구'];
+ const places=['','십','백','천'];const units=['','만','억','조','경','해'];
+ const parts=[];let unit=0;
+ while(n>0&&unit<units.length){let chunk=n%10000;let out='';for(let p=0;p<4;p++){const d=chunk%10;chunk=Math.floor(chunk/10);if(d){out=(d===1&&p>0?'':digits[d])+places[p]+out;}}
+   if(out)parts.unshift(out+units[unit]);n=Math.floor(n/10000);unit++;
+ }
+ return parts.join('');
+}
+function validate(raw){
+ if(!raw || typeof raw!=='object'||Array.isArray(raw)||!Array.isArray(raw.items)||!raw.vendor||typeof raw.vendor!=='object'||Array.isArray(raw.vendor))throw Error('견적서 데이터 형식이 올바르지 않습니다.');
+ if(raw.items.length>100)throw Error('품목은 최대 100개까지 지원합니다.');
+ if(raw.items.some(it=>!it||typeof it!=='object'||!['monthly','quantity','fixed'].includes(it.type)))throw Error('품목 계산 방식이 올바르지 않습니다.');
+ let fresh=deepCopy(DEFAULT);
+ for(const k of ['issued','quoteNo','client','contact','greeting','vatMode','validDays','showVatBreakdown','remarks','seal'])if(Object.prototype.hasOwnProperty.call(raw,k))fresh[k]=raw[k];
+ for(const k of Object.keys(fresh.vendor))if(Object.prototype.hasOwnProperty.call(raw.vendor,k))fresh.vendor[k]=String(raw.vendor[k]??'');
+ fresh.items=raw.items.map((it,i)=>({id:'loaded-'+i+'-'+Math.random().toString(36).slice(2),name:String(it.name??''),type:['monthly','quantity','fixed'].includes(it.type)?it.type:'quantity',months:Math.min(numint(it.months),9999),qty:Math.min(numint(it.qty),100000),unit:Math.min(numint(it.unit),1000000000000)}));
+ fresh.vatMode=['included','excluded','exempt'].includes(fresh.vatMode)?fresh.vatMode:'included';fresh.showVatBreakdown=Boolean(fresh.showVatBreakdown);
+ fresh.validDays=Math.min(numint(fresh.validDays),999);
+ if(typeof fresh.seal!=='string'||fresh.seal.length>2500000||!(/^data:image\/(png|jpeg|webp);base64,/.test(fresh.seal)||fresh.seal===''))fresh.seal='';
+ return fresh;
+}
+let state;try{const saved=localStorage.getItem(STORAGE_KEY);state=saved?validate(JSON.parse(saved)):deepCopy(DEFAULT);}catch(e){state=deepCopy(DEFAULT);}
+function itemSum(it){const n=numint(it.unit)*(it.type==='monthly'?numint(it.months)*numint(it.qty):it.type==='quantity'?numint(it.qty):1);if(!Number.isSafeInteger(n))throw RangeError('금액 계산 범위를 초과했습니다.');return n;}
+function totals(){const raw=state.items.reduce((sum,it)=>sum+itemSum(it),0);if(!Number.isSafeInteger(raw))throw RangeError('총액 계산 범위를 초과했습니다.');let base,vat,total;if(state.vatMode==='excluded'){base=raw;vat=Math.round(raw/10);total=base+vat;}else if(state.vatMode==='exempt'){base=raw;vat=0;total=raw;}else{total=raw;vat=Math.round(total/11);base=total-vat;}if(!Number.isSafeInteger(total))throw RangeError('총액 계산 범위를 초과했습니다.');return {base,vat,total,raw};}
+function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));$('#saveStatus').textContent='자동 저장됨';}catch(e){$('#saveStatus').textContent='저장 제한';}}
+function fill(){document.querySelectorAll('[data-field]').forEach(el=>{const field=el.dataset.field;const value=field.split('.').reduce((o,k)=>o?.[k],state);if(el.type==='checkbox')el.checked=Boolean(value);else el.value=value??'';});renderItemsEditor();renderPreview();save();}
+function renderItemsEditor(){const root=$('#itemsEditor');root.innerHTML=state.items.map((it,i)=>`<div class="item-editor" data-index="${i}">
+ <div class="item-head"><strong>품목 ${i+1}</strong><div class="item-actions"><button class="btn tiny" type="button" data-action="up" data-index="${i}" ${i===0?'disabled':''} title="위로 이동">↑</button><button class="btn tiny" type="button" data-action="down" data-index="${i}" ${i===state.items.length-1?'disabled':''} title="아래로 이동">↓</button><button class="btn tiny danger" type="button" data-action="delete" data-index="${i}">삭제</button></div></div>
+ <div class="field"><label>품명 / 규격 / 상세 설명</label><textarea data-item-field="name" rows="4">${esc(it.name)}</textarea></div>
+ <div class="field"><label>계산 방식</label><select data-item-field="type"><option value="monthly" ${it.type==='monthly'?'selected':''}>월정액 (개월 × 수량 × 월 단가)</option><option value="quantity" ${it.type==='quantity'?'selected':''}>일반 품목 (수량 × 단가)</option><option value="fixed" ${it.type==='fixed'?'selected':''}>정액 (입력 금액 그대로)</option></select></div>
+ <div class="grid3">${it.type==='monthly'?`<div class="field"><label>개월수</label><input type="number" min="0" step="1" data-item-field="months" value="${numint(it.months)}"></div>`:''}
+ ${it.type!=='fixed'?`<div class="field"><label>수량</label><input type="number" min="0" step="1" data-item-field="qty" value="${numint(it.qty)}"></div>`:''}
+ <div class="field"><label>${it.type==='fixed'?'정액 (원)':it.type==='monthly'?'월 단가 (원)':'단가 (원)'}</label><input type="number" min="0" step="1" data-item-field="unit" value="${numint(it.unit)}"></div></div>
+ <div class="calc">품목 금액: ₩ ${money(itemSum(it))}</div></div>`).join('');
+}
+function renderPreview(){const t=totals();
+ $('#prevDate').textContent=dateText(state.issued)+(state.quoteNo?'\n견적번호 : '+state.quoteNo:'');
+ $('#prevRecipient').textContent=[state.client,state.contact?state.contact+'님 귀중':'',state.greeting].filter(Boolean).join('\n');
+ const map={prevReg:'registration',prevVendor:'name',prevCEO:'ceo',prevAddress:'address',prevType:'businessType',prevBusinessItem:'businessItem',prevPhone:'phone'};
+ Object.entries(map).forEach(([id,k])=>{const el=document.getElementById(id);el.textContent=state.vendor[k]??'';el.style.whiteSpace='pre-line';});
+ const image=$('#prevSeal');if(state.seal){image.src=state.seal;image.style.display='block';}else{image.removeAttribute('src');image.style.display='none';}
+ $('#prevAmount').innerHTML=`<b>金 額 :</b> 일금 ${esc(amountKorean(t.total))}원정 ( ₩ ${money(t.total)} ) ${state.vatMode==='included'?'부가세 포함':state.vatMode==='exempt'?'면세':'부가세 별도 적용'}`;
+ const rows=$('#prevItems');rows.innerHTML=state.items.length?state.items.map((it,i)=>`<tr class="item-row"><td>${i+1}</td><td class="description">${esc(it.name)}</td><td>${it.type==='monthly'?money(it.months)+'개월':'-'}</td><td>${it.type==='fixed'?'-':money(it.qty)+'개'}</td><td>${money(it.unit)}원</td><td class="money">₩ ${money(itemSum(it))}</td></tr>`).join(''):'<tr class="item-row"><td colspan="6">품목을 추가해 주세요.</td></tr>';
+ const foot=$('#prevTotals');
+ if(state.vatMode==='included'&&!state.showVatBreakdown){foot.innerHTML=`<tr><td colspan="5" class="sum-label">품목 합계 (VAT 포함)</td><td class="sum-money">₩ ${money(t.raw)}</td></tr><tr class="sum-row"><td colspan="5" class="sum-label">총　　　　　　　　　계</td><td class="sum-money">₩ ${money(t.total)}</td></tr>`;}
+ else{foot.innerHTML=`<tr><td colspan="5" class="sum-label">공 급 가 액</td><td class="sum-money">₩ ${money(t.base)}</td></tr><tr class="vat-row"><td colspan="5" class="sum-label">부가세 ${state.vatMode==='exempt'?'(면세)':'(10%)'}</td><td class="sum-money">₩ ${money(t.vat)}</td></tr><tr class="sum-row"><td colspan="5" class="sum-label">총　　　　　　　　　계</td><td class="sum-money">₩ ${money(t.total)}</td></tr>`;}
+ const remarks=String(state.remarks??'').split('\n');$('#prevRemarks').innerHTML=remarks.map((r,i)=>`<div class="remark">${r?'['+(i+1)+'] '+esc(r):'&nbsp;'}</div>`).join('');
+ $('#totalsEditor').innerHTML=`<div>${state.vatMode==='included'?'품목 합계 (VAT 포함)':state.vatMode==='exempt'?'품목 합계 (면세)':'품목 합계 (VAT 별도)'}</div><div>₩ ${money(t.raw)}</div><div>공급가액</div><div>₩ ${money(t.base)}</div><div>${state.vatMode==='exempt'?'부가세 (면세)':'부가세 (10%)'}</div><div>₩ ${money(t.vat)}</div><div class="total-last"><b>최종 견적 금액</b></div><div class="total-last">₩ ${money(t.total)}</div>`;
+}
+function changed(){renderPreview();save();}
+document.querySelectorAll('[data-field]').forEach(el=>{el.addEventListener('input',()=>{const keys=el.dataset.field.split('.');let target=state;for(const k of keys.slice(0,-1))target=target[k];target[keys.at(-1)]=el.type==='checkbox'?el.checked:el.type==='number'?numint(el.value):el.value;
+ if(el.dataset.field==='validDays'){
+   const d=numint(el.value);
+   const re=/견적서 유효기간\s*:\s*발행일로부터\s*\d+일/;
+   if(re.test(state.remarks))state.remarks=state.remarks.replace(re,'견적서 유효기간 : 발행일로부터 '+d+'일');
+   else state.remarks+=(state.remarks?'\n':'')+'견적서 유효기간 : 발행일로부터 '+d+'일';
+   $('#remarks').value=state.remarks;
+ }
+ changed();});});
+$('#itemsEditor').addEventListener('input',e=>{const el=e.target.closest('[data-item-field]');if(!el)return;const idx=Number(el.closest('[data-index]').dataset.index);const it=state.items[idx];it[el.dataset.itemField]=el.type==='number'?numint(el.value):el.value;
+ if(el.dataset.itemField==='type'){renderItemsEditor();}else{const summary=el.closest('.item-editor').querySelector('.calc');if(summary)summary.textContent='품목 금액: ₩ '+money(itemSum(it));}changed();});
+$('#itemsEditor').addEventListener('change',e=>{if(e.target.dataset.itemField==='type')renderItemsEditor();});
+$('#itemsEditor').addEventListener('click',e=>{const btn=e.target.closest('[data-action]');if(!btn)return;const idx=Number(btn.dataset.index);const action=btn.dataset.action;
+ if(action==='delete')state.items.splice(idx,1);else if(action==='up'&&idx>0)[state.items[idx-1],state.items[idx]]=[state.items[idx],state.items[idx-1]];else if(action==='down'&&idx<state.items.length-1)[state.items[idx+1],state.items[idx]]=[state.items[idx],state.items[idx+1]];
+ renderItemsEditor();changed();});
+$('#addItemBtn').addEventListener('click',()=>{state.items.push({id:'item-'+Date.now(),type:'quantity',name:'새 품목',months:1,qty:1,unit:0});renderItemsEditor();changed();$('#itemsEditor').lastElementChild?.scrollIntoView({behavior:'smooth',block:'nearest'});});
+$('#newBtn').addEventListener('click',()=>{if(!confirm('현재 견적 데이터를 새 견적으로 바꾸시겠습니까? 먼저 JSON 저장을 권장합니다.'))return;const vendor=deepCopy(state.vendor);state=deepCopy(DEFAULT);state.vendor=vendor;state.issued=new Date().toLocaleDateString('en-CA');state.client='';state.contact='';state.quoteNo='';state.items=[{id:'new-1',type:'quantity',name:'',months:1,qty:1,unit:0}];state.remarks='';state.seal='';fill();});
+$('#printBtn').addEventListener('click',()=>{window.print();});
+$('#exportBtn').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json;charset=utf-8'});const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download='견적서_'+(state.client||'신규').replace(/[\\/:*?"<>|]/g,'_')+'_'+(state.issued||'').replaceAll('-','')+'.json';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),2500);});
+$('#importBtn').addEventListener('click',()=>$('#importFile').click());
+$('#importFile').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{const raw=JSON.parse(await file.text());state=validate(raw);fill();alert('견적 데이터를 불러왔습니다.');}catch(err){alert('불러오기 오류: '+err.message)}finally{e.target.value='';}});
+$('#sealUpload').addEventListener('change',e=>{const file=e.target.files?.[0];if(!file)return;if(!['image/png','image/jpeg','image/webp'].includes(file.type)){alert('PNG, JPG 또는 WebP 이미지만 지원합니다.');return;}if(file.size>1100000){alert('직인 이미지는 1MB 이하로 선택하세요.');return;}const reader=new FileReader();reader.onload=()=>{state.seal=String(reader.result);changed();};reader.readAsDataURL(file);});
+$('#sealRemoveBtn').addEventListener('click',()=>{state.seal='';$('#sealUpload').value='';changed();});
+fill();
+</script>
+</body>
+</html>
